@@ -38,6 +38,11 @@ public class RomanNumberConverter {
 	 * parses the commands
 	 */
 	private CommandParser cmdParser;
+	
+	/**
+	 * For user input
+	 */
+	private Scanner input;
 
 	/**
 	 * Constructor initializes responder and command parser
@@ -45,6 +50,7 @@ public class RomanNumberConverter {
 	public RomanNumberConverter() {
 		this.responder = new Responder();
 		this.cmdParser = new CommandParser(responder);
+		this.input = new Scanner(System.in);
 	}
 
 	/**
@@ -82,12 +88,12 @@ public class RomanNumberConverter {
 	 */
 	public String processRequest(String line) {
 		String numbersFromCommand = cmdParser.parseCommand(line);
+		if (numbersFromCommand == null)
+			return "";
 		if(numbersFromCommand.equals("")) {
 			responder.respond(Responder.PhraseKey.MISSING_NUMBERS);
 			return "";
 		}
-		if (numbersFromCommand == null)
-			return "";
 		// Regex checks if there are comma seperated numbers or one number
 		// Negative numbers are getting checked later
 		if (!Pattern.matches(seperatedNumbersRegex, numbersFromCommand)) {
@@ -123,7 +129,6 @@ public class RomanNumberConverter {
 	 */
 	private boolean askUser(String numbers) {
 		responder.respond(Responder.PhraseKey.UNCERTAIN);
-		Scanner input = new Scanner(System.in);
 		String line = "";
 		System.out.println("Do you want me to translate these numbers?");
 		System.out.println(numbers);
@@ -131,14 +136,11 @@ public class RomanNumberConverter {
 			line = input.nextLine();
 			line = line.trim().toLowerCase();
 			if (line.equals("yes") || line.equals("y") || line.equals("yep")) {
-                input.close();
 				return true;
 			} else if (line.equals("no") || line.equals("nope") || line.equals("n")) {
 				responder.respond(Responder.PhraseKey.TRY_AGAIN);
-                input.close();
 				return false;
 			} else {
-                input.close();
 				responder.respond(Responder.PhraseKey.DID_NOT_UNDERSTAND);
 			}
 		} while (true);
@@ -185,13 +187,15 @@ public class RomanNumberConverter {
 
 	public static void main(String[] args) {
 		RomanNumberConverter rnc = new RomanNumberConverter();
-		Scanner input = new Scanner(System.in);
 		String line = "";
-		System.out.println("\nAve! I am a simple chatbot to translate arabic numbers into roman numerals \n"
-				+ "Ask me to translate arabic numbers or press 'q' to exit\n");
+		System.out.println("\n"
+				+ "##############################################################################\n"
+				+ "# Ave! I am a simple chatbot to translate arabic numbers into roman numerals #\n"
+				+ "#          Ask me to translate arabic numbers or press 'q' to exit           #\n"
+				+ "##############################################################################");
 		do {
 			System.out.print(">");
-			line = input.nextLine();
+			line = rnc.input.nextLine();
 			if (line.equals("q")) {
 				break;
 			} else {
@@ -199,7 +203,7 @@ public class RomanNumberConverter {
 			}
 
 		} while (true);
-		input.close();
+		rnc.input.close();
 		System.out.println("Vale!\n");
 	}
 

@@ -25,7 +25,7 @@ If the bot is unsure what it should do, it asks for feedback
 
 
 
-`>Can you please me translate 4 and 5 into roman?`
+`>Can you please translate 4 and 5 into roman?`
 
 >Hmmm... I'm not sure if I got that correctly
 

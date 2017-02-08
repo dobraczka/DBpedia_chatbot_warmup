@@ -13,8 +13,8 @@ public class CommandParser {
 	/**
 	 * If these are contained the bot translates the numbers
 	 */
-	public static final String[] keywords = { "convert", "translate", "what is", "what are", "in roman numerals",
-			"in roman" };
+	public static final String[] keywords = { "convert", "translate", "what is", "what are", "into roman numerals", "in roman numerals",
+			"into roman", "in roman" };
 
 	/**
 	 * these will be ignored
