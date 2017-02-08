@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import dbpedia_chatbot_warmup.Responder;
+import dbpedia_chatbot_warmup.CommandParser;
 
 /**
  * This class is the starting point of the chatbot. It contains the dialogue loop in the main and does the conversion of the numbers
@@ -50,13 +52,17 @@ public class RomanNumberConverter {
 	 * 
 	 * @param arabicNumber
 	 *            integer that is going to be converted to a roman number
-	 * @return roman roman number as String
+	 * @return roman roman number as String or null if the number was not legitimate
 	 */
-	public String convertToRomanNumber(int arabicNumber) throws NumberFormatException {
-		if (arabicNumber < 1)
+	public String convertToRomanNumber(int arabicNumber) {
+		if (arabicNumber < 1){
 			responder.respond(Responder.PhraseKey.NUMBER_TOO_SMALL);
-		if (arabicNumber > upperLimit)
+			return null;
+		}
+		if (arabicNumber > upperLimit){
 			responder.respond(Responder.PhraseKey.NUMBER_TOO_BIG);
+			return null;
+		}
 		String roman = "";
 		// part that still has to be converted
 		int remaining = arabicNumber;
@@ -74,8 +80,12 @@ public class RomanNumberConverter {
 	 * @param line user input
 	 * @return answer containing the roman numerals or empty string if something went wrong
 	 */
-	private String processRequest(String line) {
+	public String processRequest(String line) {
 		String numbersFromCommand = cmdParser.parseCommand(line);
+		if(numbersFromCommand.equals("")) {
+			responder.respond(Responder.PhraseKey.MISSING_NUMBERS);
+			return "";
+		}
 		if (numbersFromCommand == null)
 			return "";
 		// Regex checks if there are comma seperated numbers or one number
@@ -99,7 +109,7 @@ public class RomanNumberConverter {
 		String answer = "";
 		for (int i = 0; i < numbers.length; i++) {
 			String converted = convertToRomanNumber(Integer.parseInt(numbers[i].trim()));
-			if (converted.equals(""))
+			if (converted == null)
 				return "";
 			answer += converted + "\n";
 		}
@@ -121,11 +131,14 @@ public class RomanNumberConverter {
 			line = input.nextLine();
 			line = line.trim().toLowerCase();
 			if (line.equals("yes") || line.equals("y") || line.equals("yep")) {
+                input.close();
 				return true;
 			} else if (line.equals("no") || line.equals("nope") || line.equals("n")) {
 				responder.respond(Responder.PhraseKey.TRY_AGAIN);
+                input.close();
 				return false;
 			} else {
+                input.close();
 				responder.respond(Responder.PhraseKey.DID_NOT_UNDERSTAND);
 			}
 		} while (true);
@@ -142,7 +155,6 @@ public class RomanNumberConverter {
 		//Replace multiple spaces with single spaces
 		numbersString = numbersString.replaceAll("\\s\\s*", " ");
 		String numbers[] = null;
-		String delimiter = "";
 		//single number
 		if(Pattern.matches("-*\\d+", numbersString)){
 			numbers = new String[]{numbersString};
@@ -175,8 +187,8 @@ public class RomanNumberConverter {
 		RomanNumberConverter rnc = new RomanNumberConverter();
 		Scanner input = new Scanner(System.in);
 		String line = "";
-		System.out.println("Ave! I am a simple chatbot to translate arabic numbers into roman numerals \n"
-				+ "Ask me to translate arabic numbers or press 'q' to exit");
+		System.out.println("\nAve! I am a simple chatbot to translate arabic numbers into roman numerals \n"
+				+ "Ask me to translate arabic numbers or press 'q' to exit\n");
 		do {
 			System.out.print(">");
 			line = input.nextLine();
@@ -187,7 +199,18 @@ public class RomanNumberConverter {
 			}
 
 		} while (true);
-		System.out.println("Vale!");
+		input.close();
+		System.out.println("Vale!\n");
 	}
+
+	public Responder getResponder() {
+		return responder;
+	}
+
+	public CommandParser getCmdParser() {
+		return cmdParser;
+	}
+	
+	
 
 }

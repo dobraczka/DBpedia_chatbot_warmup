@@ -1,5 +1,7 @@
 package dbpedia_chatbot_warmup;
 
+import dbpedia_chatbot_warmup.Responder;
+
 /**
  * Parses the user input, prunes it and searches for keywords
  * @author Daniel Obraczka

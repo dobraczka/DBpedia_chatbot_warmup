@@ -44,6 +44,11 @@ public class Responder {
 	public static final String[] phrasesTryAgain = {
 			"Okay, try again", "Give it another go", "Let's start from the beginning", "Okidoki let's start again", "Tabula rasa!"
 	};
+	
+	public static final String[] phrasesMissingNumbers = {
+			"You have to provide me with some numbers, I'm not a magician", "Ehmmm maybe also type in the numbers",
+			"Your Answer is: MI\n ...SSING because you did not give me any numbers"
+	};
 
 	/**
 	 * Contains the PhraseKeys and maps them with an integer to avoid giving the same response twice
@@ -75,7 +80,7 @@ public class Responder {
 	}
 
 	public enum PhraseKey {
-		DID_NOT_UNDERSTAND, NUMBER_FORMAT_ERROR, NUMBER_TOO_SMALL, NUMBER_TOO_BIG, DECIMAL_POINT, UNCERTAIN, TRY_AGAIN
+		DID_NOT_UNDERSTAND, NUMBER_FORMAT_ERROR, NUMBER_TOO_SMALL, NUMBER_TOO_BIG, DECIMAL_POINT, UNCERTAIN, TRY_AGAIN, MISSING_NUMBERS
 	}
 
 	/**
@@ -99,6 +104,8 @@ public class Responder {
 			return phrasesUncertain;
 		case TRY_AGAIN:
 			return phrasesTryAgain;
+		case MISSING_NUMBERS:
+			return phrasesMissingNumbers;
 		default:
 			System.err.println("This should definitely not happen");
 			return null;
