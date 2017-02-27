@@ -37,6 +37,6 @@ If the bot is unsure what it should do, it asks for feedback
 >4  5
 
 #Basic Idea
-This is a closed-domain retrieval based bot. This means there are several predefined responses and keywords the bot is looking for.
+This is a retrieval based bot. This means there are several predefined responses and keywords the bot is looking for.
 Just taking any user input and parsing the numbers from it would destroy the chatbot character of this task, which is why I thought
 it would be nice to force the user to tell the bot that it should translate the numbers.
